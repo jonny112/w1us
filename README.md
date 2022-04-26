@@ -1,9 +1,9 @@
 # w1us
 User-space utility for interacting with 1-Wire devices through a DS2482 1-Wire bridge via i2c-dev.
 
-This is intended to be used with SOCs like Raspberry Pi or ODROID with I2C ports accessible via i2c-dev device files.
+This is intended to be used with SOCs like Raspberry Pi or ODROID, with I2C ports accessible via i2c-dev device files.
 
-A DS2482 will be at I2C address `0x18`-`0x1B` depending on the AD0/AD1 pin setting, see datasheet.
+A DS2482 will be at I2C address `0x18`-`0x1B` depending on the `AD0`/`AD1` pin setting, see datasheet.
 For detecting connected devices you may use `i2cdetect -y <port>`. Where `port` is the number of the I2C interface corresponding to `/dev/i2c-<port>`.
 
 ### w1-term
@@ -20,10 +20,11 @@ The device file will be locked for exclusive access. Another instance ran at the
 ---|---|---|---|---|---|-
 (+)|(-)|(-)|(-)|(-)|(-)| Initialization of the 1-Wire bridge/master. Should be performed once after power-on.
 (-)|(+)|(-)|(+)|(+)|(-)| Request all sensors on the bus to sample temperature and wait (polling the bus status) for this to complete. This is a broadcast (skip ROM) operation that does not require individual devices to be known.
-(-)|(+)|(+)|(-)|(-)|(-)| Detect individual 1-Wire devices/slaves and retrieve their addresses. If this is the only operation performed, the detected slave addresses are written to `stdout` as 8-byte blocks.
-(-)|(+)|(-)|(+)|(-)|(+)| Read the last sampled temperature value from each sensors. If no slave detection is performed in the same run, addresses are read from `stdin` as 8-byte blocks.
+(-)|(+)|(+)|(-)|(-)|(-)| Detect individual 1-Wire devices/slaves and retrieve their addresses. If this is the only operation performed, the detected slave addresses are written in `stdout` as 8-byte blocks.
+(-)|(+)|(-)|(+)|(-)|(+)| Read the last sampled temperature value from each sensor. If no slave detection is performed in the same run, addresses are read from `stdin` in 8-byte blocks.
 
 By default temperature values are output to `stdout` in RRD format, with values in the order slave addresses were specified/detected, or alternatively as JSON object mapping address-strings to numbers.
+
 A `*` or `!` in the output means good or bad checksum respectively, for addresses and data.
 Values for addresses from which could not be successfully read are output as `U` for RRD and `null` for JSON.
 
