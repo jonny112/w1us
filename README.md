@@ -18,10 +18,10 @@ The device file will be locked for exclusive access. Another instance ran at the
 #### Process options
  i | c | d | t | s | r | Step
 ---|---|---|---|---|---|-
- + | - | - | - | - | - | Initialization of the 1-Wire bridge/master. Should be performed once after power-on.
-\- | + | - | + | + | - | Request all sensors on the bus to sample temperature and wait (polling the bus status) for this to complete. This is a broadcast (skip ROM) operation that does not require individual devices to be known.
-\- | + | + | - | - | - | Detect individual 1-Wire devices/slaves and retrieve their addresses. If this is the only operation performed, the detected slave addresses are written to `stdout` as 8-byte blocks.
-\- | + | - | + | - | + | Read the last sampled temperature value from each sensors. If no slave detection is performed in the same run, addresses are read from `stdin` as 8-byte blocks.
+(+)|(-)|(-)|(-)|(-)|(-)| Initialization of the 1-Wire bridge/master. Should be performed once after power-on.
+(-)|(+)|(-)|(+)|(+)|(-)| Request all sensors on the bus to sample temperature and wait (polling the bus status) for this to complete. This is a broadcast (skip ROM) operation that does not require individual devices to be known.
+(-)|(+)|(+)|(-)|(-)|(-)| Detect individual 1-Wire devices/slaves and retrieve their addresses. If this is the only operation performed, the detected slave addresses are written to `stdout` as 8-byte blocks.
+(-)|(+)|(-)|(+)|(-)|(+)| Read the last sampled temperature value from each sensors. If no slave detection is performed in the same run, addresses are read from `stdin` as 8-byte blocks.
 
 By default temperature values are output to `stdout` in RRD format, with values in the order slave addresses were specified/detected, or alternatively as JSON object mapping address-strings to numbers.
 A `*` or `!` in the output means good or bad checksum respectively, for addresses and data.
